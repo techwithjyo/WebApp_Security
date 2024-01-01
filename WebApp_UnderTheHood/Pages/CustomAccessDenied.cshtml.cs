@@ -4,19 +4,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp_UnderTheHood.Pages
 {
-    [Authorize]
-    public class IndexModel : PageModel
+    public class CustomAccessDeniedModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
-
+        [AllowAnonymous]
         public void OnGet()
         {
-
         }
     }
 }
