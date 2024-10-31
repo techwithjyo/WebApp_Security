@@ -1,0 +1,39 @@
+﻿@page
+@model RegisterModel
+@{
+
+}
+<h3>User Registration</h3>
+<br/>
+<div class="container border" style="padding:20px">
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="All"></div>
+        <div class="mb-3 row">
+            <div class="col-2">
+                <label asp-for="RegisterModel1.Email"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="RegisterModel1.Email" class="form-control" />
+                <span class="text-danger" asp-validation-for="RegisterModel1.Email"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-2">
+                <label asp-for="RegisterModel1.Password"></label>
+            </div>
+            <div class="col-5">
+                <input type="password" asp-for="RegisterModel1.Password" class="form-control" />
+                <span class="text-danger" asp-validation-for="RegisterModel1.Password"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-2">
+                <input type="submit" class="btn btn-primary" value="Register" />
+            </div>
+            <div class="col-5">
+            </div>
+        </div>
+    </form>
+</div>
