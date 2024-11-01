@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Eventing.Reader;
 using System.Security.Claims;
+using WebApp.Data.Account;
 
 namespace WebApp.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        private readonly SignInManager<User> _signInManager;
+        public LoginModel(SignInManager<User> signInManager)
         {
             _signInManager = signInManager;
         }
