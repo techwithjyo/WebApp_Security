@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
+using System.Security.Claims;
 using WebApp.Data.Account;
 using WebApp.Services;
 
@@ -33,15 +34,18 @@ namespace WebApp.Pages.Account
             var user = new User
             {
                 Email = RegisterModel1.Email,
-                UserName = RegisterModel1.Email,
-                Department = RegisterModel1.Department,
-                Position = RegisterModel1.Position
+                UserName = RegisterModel1.Email
             };
+
+            var claimDepartment = new Claim("Department", RegisterModel1.Department);
+            var claimPosition = new Claim("Position", RegisterModel1.Position);
 
             var result = await this._userManager.CreateAsync(user, RegisterModel1.Password);
             
             if (result.Succeeded)
             {
+                await this._userManager.AddClaimAsync(user, claimDepartment);
+                await this._userManager.AddClaimAsync(user, claimPosition);
                 var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 return Redirect(Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token = confirmationToken })?? "");
