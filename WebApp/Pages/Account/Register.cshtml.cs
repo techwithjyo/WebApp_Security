@@ -34,11 +34,12 @@ namespace WebApp.Pages.Account
             var user = new User
             {
                 Email = RegisterModel1.Email,
-                UserName = RegisterModel1.Email
+                UserName = RegisterModel1.Email,
             };
 
             var claimDepartment = new Claim("Department", RegisterModel1.Department);
             var claimPosition = new Claim("Position", RegisterModel1.Position);
+            var claimCompanyCode = new Claim("CompanyCode", RegisterModel1.CompanyCode);
 
             var result = await this._userManager.CreateAsync(user, RegisterModel1.Password);
             
@@ -46,6 +47,7 @@ namespace WebApp.Pages.Account
             {
                 await this._userManager.AddClaimAsync(user, claimDepartment);
                 await this._userManager.AddClaimAsync(user, claimPosition);
+                await this._userManager.AddClaimAsync(user, claimCompanyCode);
                 var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 return Redirect(Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token = confirmationToken })?? "");
@@ -77,6 +79,8 @@ namespace WebApp.Pages.Account
             public string Department { get; set; } = string.Empty;
             [Required]
             public string Position { get; set; } = string.Empty;
+            [Required]
+            public string CompanyCode { get; set; } = string.Empty;
         }
     }
 }

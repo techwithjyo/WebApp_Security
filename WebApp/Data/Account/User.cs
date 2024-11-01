@@ -6,5 +6,6 @@ namespace WebApp.Data.Account
     {
         public string Department { get; set; } = string.Empty;
         public string Position { get; set; } = string.Empty;
+        public string CompanyCode { get; set; } = string.Empty;
     }
 }

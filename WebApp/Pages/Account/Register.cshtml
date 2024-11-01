@@ -4,7 +4,7 @@
 
 }
 <h3>User Registration</h3>
-<br/>
+<br />
 <div class="container border" style="padding:20px">
     <form method="post">
         <div class="text-danger" asp-validation-summary="All"></div>
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-         <div class="mb-3 row">
+        <div class="mb-3 row">
             <div class="col-2">
                 <label asp-for="RegisterModel1.Department"></label>
             </div>
@@ -28,13 +28,23 @@
             </div>
         </div>
 
-         <div class="mb-3 row">
+        <div class="mb-3 row">
             <div class="col-2">
                 <label asp-for="RegisterModel1.Position"></label>
             </div>
             <div class="col-5">
                 <input type="text" asp-for="RegisterModel1.Position" class="form-control" />
                 <span class="text-danger" asp-validation-for="RegisterModel1.Position"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-2">
+                <label asp-for="RegisterModel1.CompanyCode"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="RegisterModel1.CompanyCode" class="form-control" />
+                <span class="text-danger" asp-validation-for="RegisterModel1.CompanyCode"></span>
             </div>
         </div>
 
