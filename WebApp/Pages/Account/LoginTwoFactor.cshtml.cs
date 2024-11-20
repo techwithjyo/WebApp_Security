@@ -34,7 +34,7 @@ namespace WebApp.Pages.Account
             var twoFactorCode = await userManager.GenerateTwoFactorTokenAsync(user, "Email");
 
             //send email to the user
-            await emailService.SendAsync("jyotirmoy.professional@gmail.com", user.Email, "My Web App's OTP:", $"Please use this code as the OTP: {twoFactorCode}");
+            await emailService.SendAsync("jyotirmoy.professional@gmail.com", user.Email, $"My Web App's OTP: {twoFactorCode}", $"Please use this code as the OTP: {twoFactorCode}");
 
         }
 

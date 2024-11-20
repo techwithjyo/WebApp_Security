@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using System.Security.Claims;
 using WebApp.Data.Account;
 using WebApp.Services;
+using WebApp.Settings;
 
 namespace WebApp.Pages.Account
 {
@@ -13,11 +15,13 @@ namespace WebApp.Pages.Account
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
+        private readonly IOptions<SmtpSettings> smtpSettings;
 
-        public RegisterModel(UserManager<User> userManager, IEmailService emailService)
+        public RegisterModel(UserManager<User> userManager, IEmailService emailService, IOptions<SmtpSettings> smtpSettings)
         {
             _userManager = userManager;
             _emailService = emailService;
+            this.smtpSettings = smtpSettings;
         }
         [BindProperty]
         public RegisterViewModel RegisterModel1 { get; set; } = new RegisterViewModel();
@@ -42,7 +46,7 @@ namespace WebApp.Pages.Account
             var claimCompanyCode = new Claim("CompanyCode", RegisterModel1.CompanyCode);
 
             var result = await this._userManager.CreateAsync(user, RegisterModel1.Password);
-            
+
             if (result.Succeeded)
             {
                 await this._userManager.AddClaimAsync(user, claimDepartment);
@@ -50,13 +54,18 @@ namespace WebApp.Pages.Account
                 await this._userManager.AddClaimAsync(user, claimCompanyCode);
                 var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                return Redirect(Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token = confirmationToken })?? "");
+                if (smtpSettings.Value.EmailSentFromDemoServer.ToString().ToLower() == "true")
+                {
+                    return Redirect(Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token = confirmationToken }) ?? "");
+                }
+                else
+                {
+                    var confirmationLink = Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token = confirmationToken });
 
-                //var confirmationLink = Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token = confirmationToken });
+                    await _emailService.SendAsync("jyotirmoy.professional@gmail.com", user.Email, "Please Confirm your email", $"Please click this link to confirm your email address: {confirmationLink}");
 
-                //await _emailService.SendAsync("jyotirmoy.professional@gmail.com", user.Email, "Please Confirm your email", $"Please click this link to confirm your email address: {confirmationLink}");
-                
-                //return RedirectToPage("/Account/Login");
+                    return RedirectToPage("/Account/Login");
+                }
             }
             else
             {
