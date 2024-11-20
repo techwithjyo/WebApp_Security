@@ -28,14 +28,23 @@ namespace WebApp.Pages.Account
 
             var result = await _signInManager.PasswordSignInAsync(Credential.Email, Credential.Password, Credential.RememberMe, lockoutOnFailure: false);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return RedirectToPage("/Index");
             }
             else
             {
-                if(result.IsLockedOut)
-                { 
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToPage("/Account/LoginTwofactor",
+                        new
+                        {
+                            Email =this.Credential.Email,
+                            RememberMe = this.Credential.RememberMe
+                        });
+                }
+                if (result.IsLockedOut)
+                {
                     ModelState.AddModelError("Login", "Account is locked out");
                 }
                 else
