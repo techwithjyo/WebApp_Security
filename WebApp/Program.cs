@@ -39,6 +39,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SMTP"));
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

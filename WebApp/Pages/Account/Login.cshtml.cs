@@ -18,8 +18,9 @@ namespace WebApp.Pages.Account
         }
         [BindProperty]
         public CredentialViewModel Credential { get; set; } = new CredentialViewModel();
-        public void OnGet()
+        public async Task OnGet()
         {
+           
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -36,11 +37,10 @@ namespace WebApp.Pages.Account
             {
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("/Account/LoginTwofactor",
+                    return RedirectToPage("/Account/LoginTwoFactorWithAuthenticator",
                         new
                         {
-                            Email =this.Credential.Email,
-                            RememberMe = this.Credential.RememberMe
+                            this.Credential.RememberMe
                         });
                 }
                 if (result.IsLockedOut)
