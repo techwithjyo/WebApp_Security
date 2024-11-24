@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();  
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -39,7 +41,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SMTP"));
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
-
+builder.Services.AddAuthentication().AddFacebook(options=>
+{
+    options.AppId = builder.Configuration["FacebookAppId"];
+    options.AppSecret = builder.Configuration["FacebookAppSecret"];
+});
 
 var app = builder.Build();
 
@@ -60,5 +66,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();

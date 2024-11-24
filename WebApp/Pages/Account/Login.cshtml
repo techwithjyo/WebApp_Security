@@ -46,5 +46,18 @@
               
             </div>
         </div>
+        <br />
+        <p>
+            Social Media Logins:
+            <div class="form-group">
+                @foreach(var provider in Model.ExternalLoginProviders)
+                {
+                    <button type="submit" asp-page-handler="LoginExternally"
+                    name="provider"
+                    value="@provider.Name"
+                    class="btn btn-primary">Login with @provider.DisplayName</button>
+                }
+            </div>
+        </p>
     </form>
 </div>
